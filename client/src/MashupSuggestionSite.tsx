@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Music, Send, Heart, Users, Zap, Plus, X } from 'lucide-react';
+import { Music, Send, Heart, Users, Zap, Plus, X, CheckCircle, AlertCircle } from 'lucide-react';
 
 interface SongSuggestion {
   id: string;
@@ -17,6 +17,8 @@ interface SongSuggestion {
 const MashupSuggestionSite: React.FC = () => {
   const [suggestions, setSuggestions] = useState<SongSuggestion[]>([]);
   const [isFormVisible, setIsFormVisible] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
   const [formData, setFormData] = useState({
     song1: '',
     artist1: '',
@@ -27,6 +29,9 @@ const MashupSuggestionSite: React.FC = () => {
     reason: ''
   });
 
+  // Replace this with your actual Google Apps Script Web App URL
+  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyC0avS56JE4NGwQg7WNWXyRRD5CQhrnrHmXQiNGXTax_UHpCudy-RWhTxOupNQSmps/exec';
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
@@ -34,27 +39,64 @@ const MashupSuggestionSite: React.FC = () => {
     });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!isFormValid) return;
     
-    const newSuggestion: SongSuggestion = {
-      id: Date.now().toString(),
-      ...formData,
-      timestamp: new Date(),
-      likes: 0
-    };
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+    
+    try {
+      // Submit to Google Sheets using no-cors mode
+      const response = await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
 
-    setSuggestions([newSuggestion, ...suggestions]);
-    setFormData({
-      song1: '',
-      artist1: '',
-      song2: '',
-      artist2: '',
-      suggesterName: '',
-      suggesterEmail: '',
-      reason: ''
-    });
-    setIsFormVisible(false);
+      // With no-cors, we can't read the response, so we assume success
+      // if the fetch doesn't throw an error
+      console.log('Form submitted successfully');
+      
+      const result = { success: true }; // Assume success
+      
+      if (result.success) {
+        // Add to local state for immediate display
+        const newSuggestion: SongSuggestion = {
+          id: Date.now().toString(),
+          ...formData,
+          timestamp: new Date(),
+          likes: 0
+        };
+
+        setSuggestions([newSuggestion, ...suggestions]);
+        setFormData({
+          song1: '',
+          artist1: '',
+          song2: '',
+          artist2: '',
+          suggesterName: '',
+          suggesterEmail: '',
+          reason: ''
+        });
+        setSubmitStatus('success');
+        
+        // Close form after successful submission
+        setTimeout(() => {
+          setIsFormVisible(false);
+          setSubmitStatus(null);
+        }, 2000);
+      } else {
+        setSubmitStatus('error');
+      }
+    } catch (error) {
+      console.error('Error submitting suggestion:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleLike = (id: string) => {
@@ -145,6 +187,21 @@ const MashupSuggestionSite: React.FC = () => {
                 <X className="h-6 w-6" />
               </button>
             </div>
+
+            {/* Status Messages */}
+            {submitStatus === 'success' && (
+              <div className="mb-6 p-4 bg-green-500/20 border border-green-500/30 rounded-lg flex items-center space-x-2">
+                <CheckCircle className="h-5 w-5 text-green-400" />
+                <span className="text-green-400">Thanks! Your suggestion has been submitted successfully!</span>
+              </div>
+            )}
+
+            {submitStatus === 'error' && (
+              <div className="mb-6 p-4 bg-red-500/20 border border-red-500/30 rounded-lg flex items-center space-x-2">
+                <AlertCircle className="h-5 w-5 text-red-400" />
+                <span className="text-red-400">Oops! Something went wrong. Please try again.</span>
+              </div>
+            )}
 
             <div className="space-y-4">
               <div>
@@ -238,11 +295,20 @@ const MashupSuggestionSite: React.FC = () => {
               <button
                 type="button"
                 onClick={handleSubmit}
-                disabled={!isFormValid}
+                disabled={!isFormValid || isSubmitting}
                 className="w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 disabled:from-gray-500 disabled:to-gray-600 disabled:cursor-not-allowed px-6 py-3 rounded-lg font-semibold flex items-center justify-center space-x-2 transition-all duration-200"
               >
-                <Send className="h-5 w-5" />
-                <span>Submit Suggestion</span>
+                {isSubmitting ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                    <span>Submitting...</span>
+                  </>
+                ) : (
+                  <>
+                    <Send className="h-5 w-5" />
+                    <span>Submit Suggestion</span>
+                  </>
+                )}
               </button>
             </div>
           </div>
