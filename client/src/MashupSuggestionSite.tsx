@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { Music, Send, Heart, Users, Zap, Plus, X, CheckCircle, AlertCircle, DollarSign } from 'lucide-react';
 import MusicIconSVG from './assets/music_icon.svg';
 import AudioMackIcon from './assets/audiomack.svg';
+import PaypalIcon from './assets/paypal.svg'
+import VenmoIcon from './assets/venmo.svg'
+import CashappIcon from './assets/cashapp.svg'
 
 interface SongSuggestion {
   id: string;
@@ -219,7 +222,8 @@ const MashupSuggestionSite: React.FC = () => {
                   rel="noopener noreferrer"
                   className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 px-6 py-4 rounded-full font-semibold flex items-center justify-center space-x-3 transition-all duration-200 transform hover:scale-105 shadow-lg"
                 >
-                  <DollarSign className="h-5 w-5" />
+                  {/* <DollarSign className="h-5 w-5" /> */}
+                  <img src={PaypalIcon} className="h-6 w-6 rounded-full" alt="Paypal" />
                   <span>Donate via PayPal</span>
                 </a>
                 
@@ -229,7 +233,8 @@ const MashupSuggestionSite: React.FC = () => {
                   rel="noopener noreferrer"
                   className="w-full bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 px-6 py-4 rounded-full font-semibold flex items-center justify-center space-x-3 transition-all duration-200 transform hover:scale-105 shadow-lg"
                 >
-                  <Heart className="h-5 w-5" />
+                  {/* <Heart className="h-5 w-5" /> */}
+                  <img src={VenmoIcon} className="h-5 w-5 rounded-full" alt="Venmo" />
                   <span>Venmo</span>
                 </a>
                 
@@ -239,7 +244,8 @@ const MashupSuggestionSite: React.FC = () => {
                   rel="noopener noreferrer"
                   className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 px-6 py-4 rounded-full font-semibold flex items-center justify-center space-x-3 transition-all duration-200 transform hover:scale-105 shadow-lg"
                 >
-                  <DollarSign className="h-5 w-5" />
+                  {/* <DollarSign className="h-5 w-5" /> */}
+                  <img src={CashappIcon} className="h-5 w-5 rounded-full" alt="Cash App" />
                   <span>Cash App</span>
                 </a>
               </div>
