@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Music, Send, Heart, Users, Zap, Plus, X, CheckCircle, AlertCircle } from 'lucide-react';
+import { Music, Send, Heart, Users, Zap, Plus, X, CheckCircle, AlertCircle, DollarSign } from 'lucide-react';
 
 interface SongSuggestion {
   id: string;
@@ -17,6 +17,7 @@ interface SongSuggestion {
 const MashupSuggestionSite: React.FC = () => {
   const [suggestions, setSuggestions] = useState<SongSuggestion[]>([]);
   const [isFormVisible, setIsFormVisible] = useState(false);
+  const [isDonateVisible, setIsDonateVisible] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
   const [formData, setFormData] = useState({
@@ -134,6 +135,13 @@ const MashupSuggestionSite: React.FC = () => {
                 <Plus className="h-5 w-5" />
                 <span>Suggest Song</span>
               </button>
+              <button
+                onClick={() => setIsDonateVisible(true)}
+                className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 px-6 py-3 rounded-full font-semibold flex items-center space-x-2 transition-all duration-200 transform hover:scale-105"
+              >
+                <Heart className="h-5 w-5" />
+                <span>Support</span>
+              </button>
               <a
                 href="https://audiomack.com/ehanzo523"
                 target="_blank"
@@ -155,7 +163,7 @@ const MashupSuggestionSite: React.FC = () => {
             Help Me Create Epic Mashups
           </h2>
           <p className="text-xl text-white/80 mb-8 leading-relaxed">
-            Got a song you think would make an amazing mashup? I'm always looking for fresh ideas to make new mashups! Suggest some song(s) and I'll work on creating your mashup which will be posted on Audiomack when finished. Thank you! ❤️🎵
+            Got a song you think would make an amazing mashup? I'm always looking for fresh ideas to make new mashups! Suggest some song(s) and I'll work on creating your custom mashup which will be posted on Audiomack when finished. Thank you! ❤️🎵
           </p>
           <div className="flex justify-center space-x-8 text-white/60">
             <div className="flex items-center space-x-2">
@@ -164,7 +172,6 @@ const MashupSuggestionSite: React.FC = () => {
             </div>
             <div className="flex items-center space-x-2">
               <Heart className="h-5 w-5" />
-              {/* <span>{suggestions.reduce((total, s) => total + s.likes, 0)} likes</span> */}
               <span>Let's create together!</span>
             </div>
             <div className="flex items-center space-x-2">
@@ -174,6 +181,74 @@ const MashupSuggestionSite: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* Donate Modal */}
+      {isDonateVisible && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 max-w-md w-full border border-white/20">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-2xl font-bold bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">
+                Support My Music
+              </h3>
+              <button
+                onClick={() => setIsDonateVisible(false)}
+                className="text-white/60 hover:text-white transition-colors"
+              >
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+
+            <div className="text-center">
+              <div className="flex justify-center mb-6">
+                <div className="bg-gradient-to-r from-yellow-500 to-orange-500 p-4 rounded-full">
+                  <DollarSign className="h-8 w-8 text-white" />
+                </div>
+              </div>
+              
+              <p className="text-white/80 mb-8 leading-relaxed">
+                Love the mashups? Help me keep creating amazing music by supporting my work! 
+                Your donations help me invest in better equipment, software, and more time to create the mashups you love.
+              </p>
+              
+              <div className="space-y-4">
+                <a
+                  href="https://www.paypal.com/donate/?business=ehanzo523@gmail.com&no_recurring=0&item_name=Support+eHanzo+Mashups&currency_code=USD"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 px-6 py-4 rounded-full font-semibold flex items-center justify-center space-x-3 transition-all duration-200 transform hover:scale-105 shadow-lg"
+                >
+                  <DollarSign className="h-5 w-5" />
+                  <span>Donate via PayPal</span>
+                </a>
+                
+                <a
+                  href="https://venmo.com/ehanzo523"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 px-6 py-4 rounded-full font-semibold flex items-center justify-center space-x-3 transition-all duration-200 transform hover:scale-105 shadow-lg"
+                >
+                  <Heart className="h-5 w-5" />
+                  <span>Venmo</span>
+                </a>
+                
+                <a
+                  href="https://cash.app/$ehanzo523"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 px-6 py-4 rounded-full font-semibold flex items-center justify-center space-x-3 transition-all duration-200 transform hover:scale-105 shadow-lg"
+                >
+                  <DollarSign className="h-5 w-5" />
+                  <span>Cash App</span>
+                </a>
+              </div>
+              
+              <div className="mt-6 text-white/60 text-sm">
+                <p>Every contribution helps me create better mashups for you! 🎵❤️</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Suggestion Form Modal */}
       {isFormVisible && (
