@@ -29,7 +29,7 @@ const MashupSuggestionSite: React.FC = () => {
     reason: ''
   });
 
-  // Replace this with your actual Google Apps Script Web App URL
+  // Google Apps Script Web App URL
   const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyC0avS56JE4NGwQg7WNWXyRRD5CQhrnrHmXQiNGXTax_UHpCudy-RWhTxOupNQSmps/exec';
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -121,9 +121,9 @@ const MashupSuggestionSite: React.FC = () => {
               </div>
               <div>
                 <h1 className="text-3xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
-                  Mashup Suggestions
+                  eHanzo Mashups
                 </h1>
-                <p className="text-white/70 text-sm">Help me create the perfect mashup</p>
+                <p className="text-white/70 text-sm">Help me create the perfect mashup!</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
@@ -155,20 +155,21 @@ const MashupSuggestionSite: React.FC = () => {
             Help Me Create Epic Mashups
           </h2>
           <p className="text-xl text-white/80 mb-8 leading-relaxed">
-            Got a song you think would make an amazing mashup? I'm always looking for fresh ideas and your suggestions help me create the next viral hit! Drop your ideas below and let's make some musical magic together 🎵
+            Got a song you think would make an amazing mashup? I'm always looking for fresh ideas to make new mashups! Suggest some song(s) and I'll work on creating your mashup which will be posted on Audiomack when finished. Thank you! ❤️🎵
           </p>
           <div className="flex justify-center space-x-8 text-white/60">
             <div className="flex items-center space-x-2">
               <Users className="h-5 w-5" />
-              <span>{suggestions.length} suggestions</span>
+              <span>{suggestions.length} {suggestions.length == 1 ? 'suggestion' : 'suggestions'}</span>
             </div>
             <div className="flex items-center space-x-2">
               <Heart className="h-5 w-5" />
-              <span>{suggestions.reduce((total, s) => total + s.likes, 0)} likes</span>
+              {/* <span>{suggestions.reduce((total, s) => total + s.likes, 0)} likes</span> */}
+              <span>Let's create together!</span>
             </div>
             <div className="flex items-center space-x-2">
               <Zap className="h-5 w-5" />
-              <span>Let's create together!</span>
+              <span>Powered by the community</span>
             </div>
           </div>
         </div>
@@ -379,7 +380,7 @@ const MashupSuggestionSite: React.FC = () => {
       {/* Footer */}
       <footer className="bg-black/20 backdrop-blur-sm border-t border-white/10 py-8">
         <div className="container mx-auto px-4 text-center text-white/60">
-          <p>&copy; 2025 eHanzo Music. Keep the suggestions flowing! 🎵</p>
+          <p>&copy; 2025 eHanzo Mashups. Keep the music flowing! 🎵</p>
         </div>
       </footer>
     </div>
