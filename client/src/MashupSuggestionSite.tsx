@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Music, Send, Heart, Users, Zap, Plus, X, CheckCircle, AlertCircle, DollarSign } from 'lucide-react';
+import MusicIconSVG from './assets/music_icon.svg';
+import AudioMackIcon from './assets/audiomack.svg';
 
 interface SongSuggestion {
   id: string;
@@ -117,9 +119,9 @@ const MashupSuggestionSite: React.FC = () => {
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="bg-gradient-to-r from-pink-500 to-purple-500 p-3 rounded-full">
-                <Music className="h-8 w-8" />
-              </div>
+              {/* <div className="bg-gradient-to-r from-pink-500 to-purple-500 p-3 rounded-full"> */}
+                <img src={MusicIconSVG} className="h-14 w-14 rounded-full" alt="Music" />
+              {/* </div> */}
               <div>
                 <h1 className="text-3xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
                   eHanzo Mashups
@@ -148,7 +150,7 @@ const MashupSuggestionSite: React.FC = () => {
                 rel="noopener noreferrer"
                 className="bg-black/30 hover:bg-black/50 border border-white/20 hover:border-white/40 px-6 py-3 rounded-full font-semibold flex items-center space-x-2 transition-all duration-200 transform hover:scale-105"
               >
-                <Music className="h-5 w-5" />
+                <img src={AudioMackIcon} className="h-5 w-5" alt="Audiomack" />
                 <span>Listen on Audiomack</span>
               </a>
             </div>
