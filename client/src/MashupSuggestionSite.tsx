@@ -36,7 +36,7 @@ const MashupSuggestionSite: React.FC = () => {
   });
 
   // Google Apps Script Web App URL
-  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyC0avS56JE4NGwQg7WNWXyRRD5CQhrnrHmXQiNGXTax_UHpCudy-RWhTxOupNQSmps/exec';
+  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxTfnWa9KcMsf_uO8lxpG8k6sEwnNOMe-XWj-ulDCzgRKASpJWJhTudXEqT-75mZcmM/exec';
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
