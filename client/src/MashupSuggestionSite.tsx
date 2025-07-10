@@ -164,7 +164,7 @@ const MashupSuggestionSite: React.FC = () => {
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-16 text-center">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-5xl font-bold mb-6 bg-gradient-to-r from-yellow-400 via-pink-400 to-purple-400 bg-clip-text text-transparent">
+          <h2 className="text-5xl py-3 font-bold mb-6 bg-gradient-to-r from-yellow-400 via-pink-400 to-purple-400 bg-clip-text text-transparent">
             Help Me Create Epic Mashups
           </h2>
           <p className="text-xl text-white/80 mb-8 leading-relaxed">
