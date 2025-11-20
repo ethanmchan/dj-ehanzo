@@ -1,0 +1,29 @@
+### Node
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+### Netlify functions
+/netlify/functions/node_modules/
+/netlify/functions/.env
+/netlify/functions/.netlify-env
+/netlify/functions/package-lock.json
+
+### Client
+/client/node_modules/
+/client/dist/
+/client/.env
+/client/.env.local
+
+### Build / output
+/dist/
+/.next/
+
+### OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+
+### Env
+.env
+.env.*.local

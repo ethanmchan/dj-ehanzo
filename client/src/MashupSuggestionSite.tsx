@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Music, Send, Heart, Users, Zap, Plus, X, CheckCircle, AlertCircle, DollarSign } from 'lucide-react';
+import { Music, Heart, Users, Zap, Plus, X, DollarSign } from 'lucide-react';
+import MashupSuggestionForm from './MashupSuggestionForm';
 import MusicIconSVG from './assets/music_icon.svg';
 import AudioMackIcon from './assets/audiomack.svg';
 import PaypalIcon from './assets/paypal.svg'
@@ -19,6 +20,14 @@ interface SongSuggestion {
   likes: number;
 }
 
+interface SongMade {
+  id: string;
+  title: string;
+  artist: string;
+  releaseDate: Date;
+  link?: string;
+}
+
 const MashupSuggestionSite: React.FC = () => {
   const [suggestions, setSuggestions] = useState<SongSuggestion[]>([]);
   const [isFormVisible, setIsFormVisible] = useState(false);
@@ -34,6 +43,24 @@ const MashupSuggestionSite: React.FC = () => {
     suggesterEmail: '',
     reason: ''
   });
+
+  // Placeholder for songs made by the artist. Replace with DB/API fetch later.
+  const [songsMade] = useState<SongMade[]>([
+    {
+      id: '1',
+      title: 'Midnight Mashup',
+      artist: 'eHanzo',
+      releaseDate: new Date('2024-05-01'),
+      link: 'https://audiomack.com/ehanzo523'
+    },
+    {
+      id: '2',
+      title: 'Sunset Blend',
+      artist: 'eHanzo',
+      releaseDate: new Date('2024-10-10'),
+      link: 'https://audiomack.com/ehanzo523'
+    }
+  ]);
 
   // Google Apps Script Web App URL
   const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxTfnWa9KcMsf_uO8lxpG8k6sEwnNOMe-XWj-ulDCzgRKASpJWJhTudXEqT-75mZcmM/exec';
@@ -113,7 +140,7 @@ const MashupSuggestionSite: React.FC = () => {
     ));
   };
 
-  const isFormValid = formData.song1 && formData.artist1 && formData.suggesterName;
+  const isFormValid = !!(formData.song1 && formData.artist1 && formData.suggesterName);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 text-white">
@@ -168,7 +195,7 @@ const MashupSuggestionSite: React.FC = () => {
             Help Me Create Epic Mashups
           </h2>
           <p className="text-xl text-white/80 mb-8 leading-relaxed">
-            Got a song you think would make an amazing mashup? I'm always looking for fresh ideas to make new mashups! Suggest some song(s) and I'll work on creating your custom mashup which will be posted on Audiomack when finished. Thank you! ❤️🎵
+            Got a song you think would make an amazing mashup? I'm always looking for fresh ideas to make new mashups! Suggest some song(s) and I'll work on creating your custom mix which will be posted on Audiomack when finished. Thank you! ❤️🎵
           </p>
           <div className="flex justify-center space-x-8 text-white/60">
             <div className="flex items-center space-x-2">
@@ -258,146 +285,46 @@ const MashupSuggestionSite: React.FC = () => {
         </div>
       )}
 
-      {/* Suggestion Form Modal */}
+      {/* Suggestion Form Modal (moved to separate component) */}
       {isFormVisible && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 max-w-md w-full border border-white/20">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-2xl font-bold">Suggest a Song for Me</h3>
-              <button
-                onClick={() => setIsFormVisible(false)}
-                className="text-white/60 hover:text-white transition-colors"
-              >
-                <X className="h-6 w-6" />
-              </button>
-            </div>
-
-            {/* Status Messages */}
-            {submitStatus === 'success' && (
-              <div className="mb-6 p-4 bg-green-500/20 border border-green-500/30 rounded-lg flex items-center space-x-2">
-                <CheckCircle className="h-5 w-5 text-green-400" />
-                <span className="text-green-400">Thanks! Your suggestion has been submitted successfully!</span>
-              </div>
-            )}
-
-            {submitStatus === 'error' && (
-              <div className="mb-6 p-4 bg-red-500/20 border border-red-500/30 rounded-lg flex items-center space-x-2">
-                <AlertCircle className="h-5 w-5 text-red-400" />
-                <span className="text-red-400">Oops! Something went wrong. Please try again.</span>
-              </div>
-            )}
-
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-white/80 mb-2">Song Title</label>
-                <input
-                  type="text"
-                  name="song1"
-                  value={formData.song1}
-                  onChange={handleInputChange}
-                  placeholder="Enter song title"
-                  className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-500"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-white/80 mb-2">Artist</label>
-                <input
-                  type="text"
-                  name="artist1"
-                  value={formData.artist1}
-                  onChange={handleInputChange}
-                  placeholder="Enter artist name"
-                  className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-500"
-                  required
-                />
-              </div>
-
-              <div className="border-t border-white/20 pt-4">
-                <label className="block text-sm font-medium text-white/80 mb-2">Second Song (Optional)</label>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <input
-                      type="text"
-                      name="song2"
-                      value={formData.song2}
-                      onChange={handleInputChange}
-                      placeholder="Song title (optional)"
-                      className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-500"
-                    />
-                  </div>
-                  <div>
-                    <input
-                      type="text"
-                      name="artist2"
-                      value={formData.artist2}
-                      onChange={handleInputChange}
-                      placeholder="Artist (optional)"
-                      className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-500"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-white/80 mb-2">Your Name</label>
-                <input
-                  type="text"
-                  name="suggesterName"
-                  value={formData.suggesterName}
-                  onChange={handleInputChange}
-                  placeholder="How should we credit you?"
-                  className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-500"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-white/80 mb-2">Email (Optional)</label>
-                <input
-                  type="email"
-                  name="suggesterEmail"
-                  value={formData.suggesterEmail}
-                  onChange={handleInputChange}
-                  placeholder="Get notified when I create your mashup"
-                  className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-white/80 mb-2">Why this song? (Optional)</label>
-                <textarea
-                  name="reason"
-                  value={formData.reason}
-                  onChange={handleInputChange}
-                  placeholder="Tell me why you think this would make a great mashup..."
-                  rows={3}
-                  className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-500 resize-none"
-                />
-              </div>
-
-              <button
-                type="button"
-                onClick={handleSubmit}
-                disabled={!isFormValid || isSubmitting}
-                className="w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 disabled:from-gray-500 disabled:to-gray-600 disabled:cursor-not-allowed px-6 py-3 rounded-lg font-semibold flex items-center justify-center space-x-2 transition-all duration-200"
-              >
-                {isSubmitting ? (
-                  <>
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                    <span>Submitting...</span>
-                  </>
-                ) : (
-                  <>
-                    <Send className="h-5 w-5" />
-                    <span>Submit Suggestion</span>
-                  </>
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
+        <MashupSuggestionForm
+          formData={formData}
+          handleInputChange={handleInputChange}
+          handleSubmit={handleSubmit}
+          isFormValid={isFormValid}
+          isSubmitting={isSubmitting}
+          submitStatus={submitStatus}
+          onClose={() => setIsFormVisible(false)}
+        />
       )}
+
+      {/* Songs I've Made - this will be pulled from a DB in the future. */}
+      <section className="container mx-auto px-4 pb-16">
+        <h3 className="text-3xl font-bold text-center mb-6">Songs I've Made</h3>
+        <p className="text-center text-white/70 mb-8">Tracks I've released — (placeholder data). In the future this list will be fetched from a database or API.</p>
+
+        {/* Sample / placeholder data for now */}
+        {/* Replace with DB fetch (useEffect) and setSongsMade once backend is ready */}
+        {/** For now, render a small grid of cards. */}
+        <div className="grid gap-6 max-w-4xl mx-auto md:grid-cols-2">
+          {songsMade.map((song) => (
+            <div key={song.id} className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-200">
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <h4 className="font-semibold text-lg">{song.title}</h4>
+                  <p className="text-white/70">{song.artist}</p>
+                </div>
+                {song.link ? (
+                  <a href={song.link} target="_blank" rel="noopener noreferrer" className="text-sm bg-black/20 px-3 py-2 rounded-full">Listen</a>
+                ) : (
+                  <span className="text-sm text-white/50 px-3 py-2 rounded-full">No link</span>
+                )}
+              </div>
+              <p className="text-white/80 text-sm">Released {song.releaseDate.toLocaleDateString()}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
       {/* Suggestions List */}
       <section className="container mx-auto px-4 pb-16">
