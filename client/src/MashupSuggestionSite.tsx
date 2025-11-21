@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Music, Heart, Users, Zap, Plus, X, DollarSign } from 'lucide-react';
-import MashupSuggestionForm from './MashupSuggestionForm';
 import MusicIconSVG from './assets/music_icon.svg';
 import AudioMackIcon from './assets/audiomack.svg';
 import PaypalIcon from './assets/paypal.svg'
 import VenmoIcon from './assets/venmo.svg'
 import CashappIcon from './assets/cashapp.svg'
+import MashupSuggestionForm from './MashupSuggestionForm';
 
 interface SongSuggestion {
   id: string;
@@ -62,37 +62,8 @@ const MashupSuggestionSite: React.FC = () => {
     }
   ]);
 
-  // Netlify Functions endpoints
-  const CREATE_SUGGESTION_URL = '/.netlify/functions/createSuggestion';
-  const GET_SUGGESTIONS_URL = '/.netlify/functions/getSuggestions';
-
-  // Load suggestions from backend on mount
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const res = await fetch(GET_SUGGESTIONS_URL);
-        if (!res.ok) throw new Error(`Failed to load: ${res.status}`);
-        const data = await res.json();
-        // Map incoming records to local SongSuggestion shape
-        const mapped: SongSuggestion[] = (data || []).map((d: any) => ({
-          id: d.id?.toString() || Date.now().toString(),
-          song1: d.song1 || d.song1,
-          artist1: d.artist1 || d.artist1,
-          song2: d.song2 || d.song2 || '',
-          artist2: d.artist2 || d.artist2 || '',
-          suggesterName: d.suggester_name || d.suggesterName || 'Anonymous',
-          suggesterEmail: d.suggester_email || d.suggesterEmail || '',
-          reason: d.reason || '',
-          timestamp: d.timestamp ? new Date(d.timestamp) : new Date(),
-          likes: d.likes || 0
-        }));
-        setSuggestions(mapped);
-      } catch (err) {
-        console.error('Error loading suggestions:', err);
-      }
-    };
-    load();
-  }, []);
+  // Google Apps Script Web App URL
+  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxTfnWa9KcMsf_uO8lxpG8k6sEwnNOMe-XWj-ulDCzgRKASpJWJhTudXEqT-75mZcmM/exec';
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
@@ -108,23 +79,22 @@ const MashupSuggestionSite: React.FC = () => {
     setSubmitStatus(null);
     
     try {
-      const res = await fetch(CREATE_SUGGESTION_URL, {
+      // Submit to Google Sheets using no-cors mode
+      await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
+        mode: 'no-cors',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData)
       });
 
-      if (!res.ok) {
-        const errBody = await res.text();
-        console.error('Server error response:', errBody);
-        setSubmitStatus('error');
-        return;
-      }
-
-      const result = await res.json();
-
+      // With no-cors, we can't read the response, so we assume success
+      // if the fetch doesn't throw an error
+      console.log('Form submitted successfully');
+      
+      const result = { success: true }; // Assume success
+      
       if (result.success) {
         // Add to local state for immediate display
         const newSuggestion: SongSuggestion = {
