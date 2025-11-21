@@ -60,6 +60,14 @@ const MashupSuggestionSite: React.FC = () => {
       releaseDate: new Date('2025-07-16'),
       link: 'https://audiomack.com/ehanzo523/song/how-its-done-popstars'
     }
+    // , 
+    //     {
+    //   id: '3',
+    //   title: 'Free x Butterfly',
+    //   artist: 'eHanzo',
+    //   releaseDate: new Date('2025-06-30'),
+    //   link: 'https://audiomack.com/ehanzo523/song/butterfly-free'
+    // }
   ]);
 
   // Google Apps Script Web App URL
@@ -298,34 +306,6 @@ const MashupSuggestionSite: React.FC = () => {
         />
       )}
 
-      {/* Songs I've Made - this will be pulled from a DB in the future. */}
-      <section className="container mx-auto px-4 pb-16">
-        <h3 className="text-3xl font-bold text-center mb-6">Trending Mixes</h3>
-        <p className="text-center text-white/70 mb-8">Check out some of the most popular mixes I've created recently.</p>
-
-        {/* Sample / placeholder data for now */}
-        {/* Replace with DB fetch (useEffect) and setSongsMade once backend is ready */}
-        {/** For now, render a small grid of cards. */}
-        <div className="grid gap-6 max-w-4xl mx-auto md:grid-cols-2">
-          {songsMade.map((song) => (
-            <div key={song.id} className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-200">
-              <div className="flex items-center justify-between mb-3">
-                <div>
-                  <h4 className="font-semibold text-lg">{song.title}</h4>
-                  <p className="text-white/70">{song.artist}</p>
-                </div>
-                {song.link ? (
-                  <a href={song.link} target="_blank" rel="noopener noreferrer" className="text-sm bg-black/20 px-3 py-2 rounded-full">Listen</a>
-                ) : (
-                  <span className="text-sm text-white/50 px-3 py-2 rounded-full">No link</span>
-                )}
-              </div>
-              <p className="text-white/80 text-sm">Released {song.releaseDate.toLocaleDateString()}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* Suggestions List */}
       <section className="container mx-auto px-4 pb-16">
         <h3 className="text-3xl font-bold text-center mb-12">What You've Suggested So Far</h3>
@@ -385,6 +365,37 @@ const MashupSuggestionSite: React.FC = () => {
             ))}
           </div>
         )}
+      </section>
+
+      <hr className="opacity-30"></hr>
+      <br></br><br></br>
+
+      {/* Trending Mixes - this will be pulled from a DB in the future. */}
+      <section className="container mx-auto px-4 pb-16">
+        <h3 className="text-3xl font-bold text-center mb-6">Trending Mixes</h3>
+        <p className="text-center text-white/70 mb-8">Check out some of the most popular mixes I've created recently.</p>
+
+        {/* Sample / placeholder data for now */}
+        {/* Replace with DB fetch (useEffect) and setSongsMade once backend is ready */}
+        {/** For now, render a small grid of cards. */}
+        <div className="grid gap-6 max-w-4xl mx-auto md:grid-cols-2">
+          {songsMade.map((song) => (
+            <div key={song.id} className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-200">
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <h4 className="font-semibold text-lg">{song.title}</h4>
+                  <p className="text-white/70">{song.artist}</p>
+                </div>
+                {song.link ? (
+                  <a href={song.link} target="_blank" rel="noopener noreferrer" className="text-sm bg-black/20 px-3 py-2 rounded-full">Listen</a>
+                ) : (
+                  <span className="text-sm text-white/50 px-3 py-2 rounded-full">No link</span>
+                )}
+              </div>
+              <p className="text-white/80 text-sm">Released {song.releaseDate.toLocaleDateString()}</p>
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* Footer */}
