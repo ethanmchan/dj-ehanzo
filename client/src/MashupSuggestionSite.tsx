@@ -48,17 +48,17 @@ const MashupSuggestionSite: React.FC = () => {
   const [songsMade] = useState<SongMade[]>([
     {
       id: '1',
-      title: 'Midnight Mashup',
+      title: 'Your Idol x Gods',
       artist: 'eHanzo',
-      releaseDate: new Date('2024-05-01'),
-      link: 'https://audiomack.com/ehanzo523'
+      releaseDate: new Date('2025-07-01'),
+      link: 'https://audiomack.com/ehanzo523/song/your-idol-gods'
     },
     {
       id: '2',
-      title: 'Sunset Blend',
+      title: 'How It\'s Done x POP\/STARS',
       artist: 'eHanzo',
-      releaseDate: new Date('2024-10-10'),
-      link: 'https://audiomack.com/ehanzo523'
+      releaseDate: new Date('2025-07-16'),
+      link: 'https://audiomack.com/ehanzo523/song/how-its-done-popstars'
     }
   ]);
 
@@ -300,8 +300,8 @@ const MashupSuggestionSite: React.FC = () => {
 
       {/* Songs I've Made - this will be pulled from a DB in the future. */}
       <section className="container mx-auto px-4 pb-16">
-        <h3 className="text-3xl font-bold text-center mb-6">Songs I've Made</h3>
-        <p className="text-center text-white/70 mb-8">Tracks I've released — (placeholder data). In the future this list will be fetched from a database or API.</p>
+        <h3 className="text-3xl font-bold text-center mb-6">Trending Mixes</h3>
+        <p className="text-center text-white/70 mb-8">Check out some of the most popular mixes I've created recently.</p>
 
         {/* Sample / placeholder data for now */}
         {/* Replace with DB fetch (useEffect) and setSongsMade once backend is ready */}

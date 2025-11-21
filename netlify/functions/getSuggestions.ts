@@ -1,23 +1,22 @@
 // Netlify Function: getSuggestions
 import { Handler } from '@netlify/functions';
-import { getSupabase } from './supabaseClient';
+import { Client } from 'pg';
 
 export const handler: Handler = async () => {
-  const supabase = getSupabase();
-  const { data, error } = await supabase
-    .from('suggestions')
-    .select('*')
-    .order('timestamp', { ascending: false });
-
-  if (error) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: error.message })
-    };
+  const connectionString = process.env.DATABASE_URL;
+  if (!connectionString) {
+    return { statusCode: 500, body: JSON.stringify({ error: 'DATABASE_URL not configured' }) };
   }
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify(data)
-  };
+  const client = new Client({ connectionString });
+  await client.connect();
+  try {
+    const res = await client.query('SELECT * FROM suggestions ORDER BY timestamp DESC');
+    return { statusCode: 200, body: JSON.stringify(res.rows) };
+  } catch (err: any) {
+    console.error('DB select error:', err);
+    return { statusCode: 500, body: JSON.stringify({ error: err.message || 'Query failed' }) };
+  } finally {
+    await client.end();
+  }
 };
