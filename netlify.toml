@@ -1,0 +1,6 @@
+[build]
+  functions = "netlify/functions"
+
+[dev]
+  # Make sure local dev picks up the same functions directory
+  functions = "netlify/functions"

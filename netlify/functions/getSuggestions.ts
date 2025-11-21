@@ -1,8 +1,9 @@
 // Netlify Function: getSuggestions
 import { Handler } from '@netlify/functions';
-import { supabase } from './supabaseClient';
+import { getSupabase } from './supabaseClient';
 
 export const handler: Handler = async () => {
+  const supabase = getSupabase();
   const { data, error } = await supabase
     .from('suggestions')
     .select('*')

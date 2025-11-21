@@ -1,6 +1,6 @@
 // Netlify Function: createSuggestion
 import { Handler } from '@netlify/functions';
-import { supabase } from './supabaseClient';
+import { getSupabase } from './supabaseClient';
 
 export const handler: Handler = async (event) => {
   if (event.httpMethod !== 'POST') {
@@ -21,7 +21,8 @@ export const handler: Handler = async (event) => {
   }
 
   // Insert into Supabase
-  const { error } = await supabase.from('suggestions').insert([
+  const supabase = getSupabase();
+  const { data: inserted, error } = await supabase.from('suggestions').insert([
     {
       song1: data.song1,
       artist1: data.artist1,
@@ -33,9 +34,10 @@ export const handler: Handler = async (event) => {
       timestamp: new Date().toISOString(),
       likes: 0
     }
-  ]);
+  ]).select();
 
   if (error) {
+    console.error('Supabase insert error:', error);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: error.message })
@@ -44,6 +46,6 @@ export const handler: Handler = async (event) => {
 
   return {
     statusCode: 200,
-    body: JSON.stringify({ success: true })
+    body: JSON.stringify({ success: true, inserted: inserted })
   };
 };
